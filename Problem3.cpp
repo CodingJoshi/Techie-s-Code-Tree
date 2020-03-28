@@ -1,6 +1,5 @@
 //Binary Tree 
 #include<iostream>
-#include<climits>
 #include<queue>
 using namespace std;
 class node{
@@ -33,29 +32,107 @@ public:
 	void BulidTree(){
 		rootnode=bulidTree();
 	}
-	void Problem3(node*start,int& max,int& min){
-		if(start->data>max)max=start->data;
-		if(start->data<min)min=start->data;
-		if(start->left!=NULL)Problem3(start->left,max,min);
-		if(start->right!=NULL)Problem3(start->right,max,min);
-	}
-	void Problem3(){
-		int max=INT_MIN;
-		int min=INT_MAX;
-		Problem3(rootnode,max,min);
-		cout<<max<<"  "<<min<<endl;
+	void PreOrderTraversal(node*start){
+			// base case:
+				if(start==NULL)return;	
 
+			//Recursive Case:
+			cout<<start->data<<" ";
+			PreOrderTraversal(start->left);
+			PreOrderTraversal(start->right);
 	}
+	void PreOrderTraversal(){
+		cout<<"Pre-Order Traversal: \n";
+		PreOrderTraversal(rootnode);
+		cout<<endl;
+	}
+
+	void PostOrderTraversal(node*start){
+			// base case:
+				if(start==NULL)return;	
+
+			//Recursive Case:
+			
+			PostOrderTraversal(start->left);
+			PostOrderTraversal(start->right);
+			cout<<start->data<<" ";
+	}
+	void PostOrderTraversal(){
+		cout<<"Post-Order Traversal: \n";
+		PostOrderTraversal(rootnode);
+		cout<<endl;
+	}
+
+	void INOrderTraversal(node*start){
+			// base case:
+				if(start==NULL)return;	
+
+			//Recursive Case:
+			
+			INOrderTraversal(start->left);
+			cout<<start->data<<" ";
+			INOrderTraversal(start->right);
+			
+	}
+	void INOrderTraversal(){
+		cout<<"In-Order Traversal: \n";
+		INOrderTraversal(rootnode);
+		cout<<endl;
+	}
+
+	void LevelorderTraversal(){
+		queue<node*>q;
+		cout<<" Level-order Traversal "<<endl;
+		q.push(rootnode);
+		q.push(NULL);
+		while(!q.empty()){
+			node*temp=q.front();
+			q.pop();
+			if(temp==NULL){
+					cout<<endl;
+					if(!q.empty())q.push(NULL);
+			}
+			else{
+				cout<<temp->data<<" ";
+			if(temp->left!=NULL)	q.push(temp->left);
+			if(temp->right!=NULL)	q.push(temp->right);
+			}
+		}
+	}
+
+
+	node* deleteLeaves(node* startnode){
+		/// Base case:
+		if(startnode==NULL)return NULL;
+		if(startnode->left==NULL&&startnode->right==NULL){
+			delete startnode;
+			return NULL;
+		}
+
+		/// Recusive case:
+		startnode->left=deleteLeaves(startnode->left);
+		startnode->right=deleteLeaves(startnode->right);
+	}
+	void deleteLeaves(){
+		deleteLeaves(rootnode);
+	}
+
 };
 int main(){
 	BinaryTree bt;
 	bt.BulidTree();
-	bt.Problem3();
+	bt.PreOrderTraversal();
+	bt.PostOrderTraversal();
+	bt.INOrderTraversal();
+	bt.LevelorderTraversal();
+	bt.deleteLeaves();
+	bt.PreOrderTraversal();
+	bt.PostOrderTraversal();
+	bt.INOrderTraversal();
+	bt.LevelorderTraversal();
 	return 0;
 }
 
 /*
-8 3 1 -1 -1 6 4 -1 -1 7 -1 -1 10 -1 14 13 -1 -1 -1 
-
-1 2 4 12 -1 -1 5 7 -1 8 -1 -1 -1 3 -1 6 10 -1 -1 9  11 -1 -1 -1 13 -1 -1
+1 2 3 -1 -1 4 8 -1 -1 9 -1 -1 5 6 -1 -1 7 10 -1 11 -1 -1 -1
 */
